@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark World King – Anime Streaming</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05050f;
+    --bg2: #0a0a1a;
+    --card: #0e0e22;
+    --gold: #c9a227;
+    --gold2: #f0c040;
+    --red: #c0152f;
+    --text: #e8e0f0;
+    --muted: #7070a0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Exo 2', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, #fff8 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, #fff6 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 55% 15%, #fffc 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 45%, #fff7 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 80%, #fff5 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 85%, #fff6 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 40%, #fffe 0%, transparent 100%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── LANGUAGE BAR ── */
+  .lang-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: #000000cc;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #c9a22730;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 40px;
+  }
+  .lang-bar-left { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; }
+  .lang-selector {
+    display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  }
+  .lang-btn {
+    background: #ffffff0a;
+    border: 1px solid #c9a22730;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .lang-btn:hover, .lang-btn.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: sticky; top: 34px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 40px;
+    background: linear-gradient(180deg, #05050fcc, #05050f88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #c9a22730;
+  }
+  .logo {
+    font-family: 'Cinzel Decorative', serif; font-size: 1.4rem; font-weight: 900;
+    background: linear-gradient(135deg, var(--gold2), var(--gold), #fff8d0);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 12px var(--gold));
+  }
+  .logo span { -webkit-text-fill-color: var(--red); filter: drop-shadow(0 0 8px #c0152f88); }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9rem;
+    letter-spacing: 1.5px; text-transform: uppercase; transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--gold2); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .search-box {
+    display: flex; align-items: center;
+    background: #ffffff0d; border: 1px solid #c9a22730;
+    border-radius: 6px; padding: 6px 12px; gap: 8px;
+  }
+  .search-box input {
+    background: none; border: none; outline: none;
+    color: var(--text); font-family: 'Exo 2', sans-serif;
+    font-size: 0.85rem; width: 150px;
+  }
+  .search-box input::placeholder { color: var(--muted); }
+  .btn-login {
+    background: linear-gradient(135deg, var(--gold), #b8860b);
+    color: #000; font-family: 'Rajdhani', sans-serif;
+    font-weight: 700; font-size: 0.85rem; letter-spacing: 1px;
+    border: none; border-radius: 6px; padding: 7px 18px;
+    cursor: pointer; transition: filter 0.2s;
+  }
+  .btn-login:hover { filter: brightness(1.2); }
+
+  /* ── HERO ── */
+  .hero { position: relative; width: 100%; height: 540px; overflow: hidden; z-index: 1; margin-top: 34px; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, #05050fff 30%, transparent 70%),
+      linear-gradient(0deg, #05050fff 0%, transparent 40%),
+      url('https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=1400&q=80') center/cover no-repeat;
+    filter: brightness(0.5) saturate(1.3);
+  }
+  .hero-content { position: relative; z-index: 2; padding: 70px 60px; max-width: 600px; }
+  .hero-badge {
+    display: inline-block; background: var(--red); color: #fff;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.7rem;
+    letter-spacing: 2px; padding: 3px 10px; border-radius: 3px;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif; font-size: 2.6rem; font-weight: 900;
+    line-height: 1.15; margin-bottom: 14px;
+    background: linear-gradient(135deg, #fff, var(--gold2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px var(--gold));
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-meta {
+    display: flex; gap: 14px; align-items: center; margin-bottom: 12px;
+    font-size: 0.82rem; color: var(--muted);
+    font-family: 'Rajdhani', sans-serif; font-weight: 600; letter-spacing: 1px;
+  }
+  .hero-meta .rating { color: var(--gold2); }
+  .hero-desc { color: #c0b8d8; line-height: 1.6; font-size: 0.88rem; margin-bottom: 26px; max-width: 460px; }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-play {
+    display: flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    color: #000; font-family: 'Rajdhani', sans-serif;
+    font-weight: 700; font-size: 0.95rem; letter-spacing: 1px;
+    padding: 11px 24px; border-radius: 6px; border: none;
+    cursor: pointer; transition: transform 0.2s, filter 0.2s; text-decoration: none;
+  }
+  .btn-play:hover { transform: scale(1.04); filter: brightness(1.15); }
+  .btn-info {
+    display: flex; align-items: center; gap: 8px;
+    background: #ffffff15; border: 1px solid #ffffff30; color: #fff;
+    font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.95rem;
+    letter-spacing: 1px; padding: 11px 24px; border-radius: 6px;
+    cursor: pointer; text-decoration: none; transition: background 0.2s;
+  }
+  .btn-info:hover { background: #ffffff25; }
+
+  /* ── SECTIONS ── */
+  .section { position: relative; z-index: 1; padding: 36px 40px 10px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif; font-size: 1rem; font-weight: 700;
+    color: var(--gold2); letter-spacing: 1px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before {
+    content: ''; display: block; width: 4px; height: 18px;
+    background: linear-gradient(180deg, var(--gold2), var(--red)); border-radius: 2px;
+  }
+  .view-all {
+    font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.78rem;
+    letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; cursor: pointer; transition: color 0.2s;
+  }
+  .view-all:hover { color: var(--gold2); }
+
+  /* ── CARDS ── */
+  .cards-row {
+    display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px;
+    scrollbar-width: thin; scrollbar-color: var(--gold) transparent;
+  }
+  .card {
+    flex: 0 0 155px; border-radius: 8px; overflow: hidden;
+    background: var(--card); border: 1px solid #ffffff0a;
+    transition: transform 0.25s, box-shadow 0.25s; cursor: pointer; position: relative;
+  }
+  .card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 32px #c9a22740, 0 0 0 1px var(--gold); }
+  .card-img-placeholder { width: 100%; height: 215px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+  .card-ep {
+    position: absolute; top: 8px; left: 8px; background: var(--red); color: #fff;
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.65rem;
+    letter-spacing: 1px; padding: 2px 7px; border-radius: 3px;
+  }
+  .card-score {
+    position: absolute; top: 8px; right: 8px; background: #000000aa; color: var(--gold2);
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.72rem;
+    padding: 2px 6px; border-radius: 3px;
+  }
+  .card-info { padding: 10px 10px 12px; }
+  .card-title {
+    font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.83rem;
+    color: var(--text); line-height: 1.3; margin-bottom: 4px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-sub { font-size: 0.7rem; color: var(--muted); }
+
+  /* ── GENRES ── */
+  .genres { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 40px 36px; z-index: 1; position: relative; }
+  .genre-tag {
+    background: #ffffff0a; border: 1px solid #c9a22740; color: var(--muted);
+    font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.78rem;
+    letter-spacing: 1px; padding: 6px 16px; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+  }
+  .genre-tag:hover, .genre-tag.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, #c9a22730, transparent); margin: 8px 40px 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1; border-top: 1px solid #c9a22720;
+    padding: 24px 40px; display: flex; align-items: center; justify-content: space-between;
+    color: var(--muted); font-size: 0.78rem; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px;
+  }
+  .logo-sm {
+    font-family: 'Cinzel Decorative', serif; font-size: 0.9rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  footer .footer-links { display: flex; gap: 18px; }
+  footer .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  footer .footer-links a:hover { color: var(--gold2); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .section { animation: fadeUp 0.7s ease both; }
+
+  /* RTL support for Arabic */
+  body.rtl { direction: rtl; }
+  body.rtl nav { flex-direction: row-reverse; }
+  body.rtl .nav-links { flex-direction: row-reverse; }
+  body.rtl .hero-content { padding-right: 60px; padding-left: 0; }
+  body.rtl .section-title::before { order: 1; }
+</style>
+</head>
+<body>
+
+<!-- ── LANGUAGE BAR ── -->
+<div class="lang-bar">
+  <div class="lang-bar-left" id="lang-label">🌍 Select Language</div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lang-btn" onclick="setLang('bn')">🇧🇩 বাংলা</button>
+    <button class="lang-btn" onclick="setLang('hi')">🇮🇳 हिंदी</button>
+    <button class="lang-btn" onclick="setLang('ar')">🇸🇦 العربية</button>
+    <button class="lang-btn" onclick="setLang('ja')">🇯🇵 日本語</button>
+    <button class="lang-btn" onclick="setLang('zh')">🇨🇳 中文</button>
+    <button class="lang-btn" onclick="setLang('ko')">🇰🇷 한국어</button>
+    <button class="lang-btn" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+    <button class="lang-btn" onclick="setLang('fr')">🇫🇷 Français</button>
+    <button class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+    <button class="lang-btn" onclick="setLang('ru')">🇷🇺 Русский</button>
+    <button class="lang-btn" onclick="setLang('pt')">🇧🇷 Português</button>
+    <button class="lang-btn" onclick="setLang('id')">🇮🇩 Indonesia</button>
+    <button class="lang-btn" onclick="setLang('ur')">🇵🇰 اردو</button>
+  </div>
+</div>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <div class="logo">Dark<span>World</span> King</div>
+  <ul class="nav-links">
+    <li><a href="#" data-key="nav_home">Home</a></li>
+    <li><a href="#" data-key="nav_trending">Trending</a></li>
+    <li><a href="#" data-key="nav_schedule">Schedule</a></li>
+    <li><a href="#" data-key="nav_movies">Movies</a></li>
+    <li><a href="#" data-key="nav_top">Top Rated</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Search anime...">
+    </div>
+    <button class="btn-login" data-key="btn_signin">Sign In</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge" data-key="badge_new">⚔ New Episode</div>
+    <h1 class="hero-title" data-key="hero_title">Demon King's<br>Eternal Throne</h1>
+    <div class="hero-meta">
+      <span class="rating">★ 9.4</span>
+      <span>|</span><span>2024</span>
+      <span>|</span><span data-key="hero_eps">24 Episodes</span>
+      <span>|</span><span data-key="hero_genre">Action · Fantasy</span>
+    </div>
+    <p class="hero-desc" data-key="hero_desc">In a world where darkness reigns supreme, one warrior rises from the ashes of a fallen kingdom to claim the throne of all realms.</p>
+    <div class="hero-btns">
+      <a class="btn-play" href="#" data-key="btn_watch">▶ Watch Now</a>
+      <a class="btn-info" href="#" data-key="btn_add">＋ Add to List</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── TRENDING ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title" data-key="sec_trending">🔥 Trending Now</div>
+    <div class="view-all" data-key="view_all">View All →</div>
+  </div>
+  <div class="cards-row">
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#1a0a2e,#4a0020)">🗡️</div><div class="card-ep">EP 12</div><div class="card-score">★ 9.1</div><div class="card-info"><div class="card-title">Shadow Realm Chronicles</div><div class="card-sub">Action · Fantasy</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#0a1a2e,#002040)">⚡</div><div class="card-ep">EP 8</div><div class="card-score">★ 8.9</div><div class="card-info"><div class="card-title">Thunder God Reborn</div><div class="card-sub">Shounen · Magic</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#1a1a00,#3a2000)">🔮</div><div class="card-ep">EP 20</div><div class="card-score">★ 9.4</div><div class="card-info"><div class="card-title">Void Sorcerer King</div><div class="card-sub">Dark Fantasy</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#200010,#400030)">🩸</div><div class="card-ep">EP 5</div><div class="card-score">★ 8.7</div><div class="card-info"><div class="card-title">Blood Moon Warrior</div><div class="card-sub">Horror · Action</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#002010,#004020)">🌿</div><div class="card-ep">EP 16</div><div class="card-score">★ 9.0</div><div class="card-info"><div class="card-title">Forest Spirit Saga</div><div class="card-sub">Adventure · Drama</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#0f0f30,#301010)">👁️</div><div class="card-ep">EP 3</div><div class="card-score">★ 8.5</div><div class="card-info"><div class="card-title">Eye of Eternity</div><div class="card-sub">Mystery · Sci-Fi</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#20100a,#402010)">🔥</div><div class="card-ep">EP 11</div><div class="card-score">★ 9.2</div><div class="card-info"><div class="card-title">Inferno Dragon Lord</div><div class="card-sub">Action · Fantasy</div></div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── RECENTLY ADDED ── -->
+<div class="section" style="padding-top:28px;">
+  <div class="section-header">
+    <div class="section-title" data-key="sec_recent">🆕 Recently Added</div>
+    <div class="view-all" data-key="view_all">View All →</div>
+  </div>
+  <div class="cards-row">
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#101030,#302060)">⚔️</div><div class="card-ep">EP 1</div><div class="card-score">★ 8.3</div><div class="card-info"><div class="card-title">Celestial Blade Arts</div><div class="card-sub">Martial Arts</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#200030,#500060)">🌙</div><div class="card-ep">EP 2</div><div class="card-score">★ 8.8</div><div class="card-info"><div class="card-title">Lunar Witch Reborn</div><div class="card-sub">Magic · Romance</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#002030,#005060)">🌊</div><div class="card-ep">EP 4</div><div class="card-score">★ 7.9</div><div class="card-info"><div class="card-title">Abyss Sea Emperor</div><div class="card-sub">Adventure</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#301000,#603020)">💀</div><div class="card-ep">EP 6</div><div class="card-score">★ 9.3</div><div class="card-info"><div class="card-title">Death God Chronicles</div><div class="card-sub">Dark · Action</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#102000,#204000)">🏹</div><div class="card-ep">EP 9</div><div class="card-score">★ 8.6</div><div class="card-info"><div class="card-title">Green Arrow Spirit</div><div class="card-sub">Shounen</div></div></div>
+    <div class="card"><div class="card-img-placeholder" style="background:linear-gradient(135deg,#201020,#402040)">🦋</div><div class="card-ep">EP 7</div><div class="card-score">★ 8.0</div><div class="card-info"><div class="card-title">Phantom Soul Dancer</div><div class="card-sub">Drama · Fantasy</div></div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── GENRES ── -->
+<div class="section" style="padding-top:26px;padding-bottom:6px;">
+  <div class="section-title" data-key="sec_genres" style="margin-bottom:14px;">🎭 Browse by Genre</div>
+</div>
+<div class="genres">
+  <div class="genre-tag active" data-key="g_all">All</div>
+  <div class="genre-tag" data-key="g_action">Action</div>
+  <div class="genre-tag" data-key="g_fantasy">Fantasy</div>
+  <div class="genre-tag" data-key="g_dark">Dark Fantasy</div>
+  <div class="genre-tag" data-key="g_shounen">Shounen</div>
+  <div class="genre-tag" data-key="g_magic">Magic</div>
+  <div class="genre-tag" data-key="g_horror">Horror</div>
+  <div class="genre-tag" data-key="g_adv">Adventure</div>
+  <div class="genre-tag" data-key="g_romance">Romance</div>
+  <div class="genre-tag" data-key="g_scifi">Sci-Fi</div>
+  <div class="genre-tag" data-key="g_mystery">Mystery</div>
+  <div class="genre-tag" data-key="g_martial">Martial Arts</div>
+  <div class="genre-tag" data-key="g_drama">Drama</div>
+  <div class="genre-tag" data-key="g_isekai">Isekai</div>
+  <div class="genre-tag" data-key="g_mecha">Mecha</div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="logo-sm">Dark World King</div>
+  <div class="footer-links">
+    <a href="#" data-key="f_about">About</a>
+    <a href="#" data-key="f_dmca">DMCA</a>
+    <a href="#" data-key="f_contact">Contact</a>
+    <a href="#" data-key="f_privacy">Privacy</a>
+    <a href="#" data-key="f_terms">Terms</a>
+  </div>
+  <div data-key="f_copy">© 2026 Dark World King. All rights reserved.</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// TRANSLATIONS
+// ═══════════════════════════════════════
+const translations = {
+  en: {
+    nav_home:'Home', nav_trending:'Trending', nav_schedule:'Schedule',
+    nav_movies:'Movies', nav_top:'Top Rated',
+    btn_signin:'Sign In', badge_new:'⚔ New Episode',
+    hero_title:"Demon King's\nEternal Throne",
+    hero_eps:'24 Episodes', hero_genre:'Action · Fantasy',
+    hero_desc:'In a world where darkness reigns supreme, one warrior rises from the ashes of a fallen kingdom to claim the throne of all realms.',
+    btn_watch:'▶ Watch Now', btn_add:'＋ Add to List',
+    sec_trending:'🔥 Trending Now', sec_recent:'🆕 Recently Added',
+    sec_genres:'🎭 Browse by Genre', view_all:'View All →',
+    search_ph:'Search anime...',
+    g_all:'All', g_action:'Action', g_fantasy:'Fantasy', g_dark:'Dark Fantasy',
+    g_shounen:'Shounen', g_magic:'Magic', g_horror:'Horror', g_adv:'Adventure',
+    g_romance:'Romance', g_scifi:'Sci-Fi', g_mystery:'Mystery',
+    g_martial:'Martial Arts', g_drama:'Drama', g_isekai:'Isekai', g_mecha:'Mecha',
+    f_about:'About', f_dmca:'DMCA', f_contact:'Contact', f_privacy:'Privacy',
+    f_terms:'Terms', f_copy:'© 2026 Dark World King. All rights reserved.',
+    lang_label:'🌍 Select Language'
+  },
+  bn: {
+    nav_home:'হোম', nav_trending:'ট্রেন্ডিং', nav_schedule:'সময়সূচী',
+    nav_movies:'মুভি', nav_top:'শীর্ষ রেটেড',
+    btn_signin:'সাইন ইন', badge_new:'⚔ নতুন এপিসোড',
+    hero_title:"ডেমন কিং-এর\nচিরন্তন সিংহাসন",
+    hero_eps:'২৪টি এপিসোড', hero_genre:'অ্যাকশন · ফ্যান্টাসি',
+    hero_desc:'যেখানে অন্ধকার রাজত্ব করে, সেই পৃথিবীতে এক যোদ্ধা ছাই থেকে উঠে সমস্ত রাজ্যের সিংহাসন দাবি করে।',
+    btn_watch:'▶ এখন দেখুন', btn_add:'＋ তালিকায় যোগ করুন',
+    sec_trending:'🔥 এখন ট্রেন্ডিং', sec_recent:'🆕 সম্প্রতি যোগ হয়েছে',
+    sec_genres:'🎭 ধরন অনুযায়ী ব্রাউজ করুন', view_all:'সব দেখুন →',
+    search_ph:'অ্যানিমে খুঁজুন...',
+    g_all:'সব', g_action:'অ্যাকশন', g_fantasy:'ফ্যান্টাসি', g_dark:'ডার্ক ফ্যান্টাসি',
+    g_shounen:'শোনেন', g_magic:'ম্যাজিক', g_horror:'হরর', g_adv:'অ্যাডভেঞ্চার',
+    g_romance:'রোমান্স', g_scifi:'সাই-ফাই', g_mystery:'রহস্য',
+    g_martial:'মার্শাল আর্টস', g_drama:'ড্রামা', g_isekai:'ইসেকাই', g_mecha:'মেকা',
+    f_about:'সম্পর্কে', f_dmca:'DMCA', f_contact:'যোগাযোগ', f_privacy:'গোপনীয়তা',
+    f_terms:'শর্তাবলী', f_copy:'© ২০২৬ ডার্ক ওয়ার্ল্ড কিং। সর্বস্বত্ব সংরক্ষিত।',
+    lang_label:'🌍 ভাষা নির্বাচন করুন'
+  },
+  hi: {
+    nav_home:'होम', nav_trending:'ट्रेंडिंग', nav_schedule:'शेड्यूल',
+    nav_movies:'मूवीज़', nav_top:'टॉप रेटेड',
+    btn_signin:'साइन इन', badge_new:'⚔ नया एपिसोड',
+    hero_title:"डेमन किंग का\nशाश्वत सिंहासन",
+    hero_eps:'२४ एपिसोड', hero_genre:'एक्शन · फैंटेसी',
+    hero_desc:'जहाँ अंधकार का राज है, वहाँ एक योद्धा राख से उठकर सभी राज्यों के सिंहासन पर दावा करता है।',
+    btn_watch:'▶ अभी देखें', btn_add:'＋ सूची में जोड़ें',
+    sec_trending:'🔥 अभी ट्रेंडिंग', sec_recent:'🆕 हाल ही में जोड़ा गया',
+    sec_genres:'🎭 शैली के अनुसार ब्राउज़ करें', view_all:'सब देखें →',
+    search_ph:'एनीमे खोजें...',
+    g_all:'सभी', g_action:'एक्शन', g_fantasy:'फैंटेसी', g_dark:'डार्क फैंटेसी',
+    g_shounen:'शोनेन', g_magic:'जादू', g_horror:'हॉरर', g_adv:'एडवेंचर',
+    g_romance:'रोमांस', g_scifi:'साइ-फाई', g_mystery:'रहस्य',
+    g_martial:'मार्शल आर्ट्स', g_drama:'ड्रामा', g_isekai:'इसेकाई', g_mecha:'मेका',
+    f_about:'के बारे में', f_dmca:'DMCA', f_contact:'संपर्क', f_privacy:'गोपनीयता',
+    f_terms:'नियम', f_copy:'© 2026 डार्क वर्ल्ड किंग। सर्वाधिकार सुरक्षित।',
+    lang_label:'🌍 भाषा चुनें'
+  },
+  ar: {
+    nav_home:'الرئيسية', nav_trending:'الأكثر رواجاً', nav_schedule:'الجدول',
+    nav_movies:'أفلام', nav_top:'الأعلى تقييماً',
+    btn_signin:'تسجيل الدخول', badge_new:'⚔ حلقة جديدة',
+    hero_title:"عرش ملك\nالشياطين الأبدي",
+    hero_eps:'٢٤ حلقة', hero_genre:'أكشن · فانتازيا',
+    hero_desc:'في عالم تسود فيه الظلام، يرتفع محارب من رماد مملكة ساقطة للمطالبة بعرش جميع العوالم.',
+    btn_watch:'▶ شاهد الآن', btn_add:'＋ أضف إلى القائمة',
+    sec_trending:'🔥 الأكثر رواجاً الآن', sec_recent:'🆕 أضيف مؤخراً',
+    sec_genres:'🎭 تصفح حسب النوع', view_all:'عرض الكل →',
+    search_ph:'ابحث عن أنمي...',
+    g_all:'الكل', g_action:'أكشن', g_fantasy:'فانتازيا', g_dark:'فانتازيا مظلمة',
+    g_shounen:'شونن', g_magic:'سحر', g_horror:'رعب', g_adv:'مغامرة',
+    g_romance:'رومانسية', g_scifi:'خيال علمي', g_mystery:'غموض',
+    g_martial:'فنون قتالية', g_drama:'دراما', g_isekai:'إيسيكاي', g_mecha:'ميكا',
+    f_about:'حول', f_dmca:'DMCA', f_contact:'اتصل', f_privacy:'الخصوصية',
+    f_terms:'الشروط', f_copy:'© 2026 دارك وورلد كينغ. جميع الحقوق محفوظة.',
+    lang_label:'🌍 اختر اللغة'
+  },
+  ja: {
+    nav_home:'ホーム', nav_trending:'トレンド', nav_schedule:'スケジュール',
+    nav_movies:'映画', nav_top:'トップ評価',
+    btn_signin:'サインイン', badge_new:'⚔ 新着エピソード',
+    hero_title:"魔王の\n永遠の玉座",
+    hero_eps:'24話', hero_genre:'アクション・ファンタジー',
+    hero_desc:'暗黒が支配する世界で、倒れた王国の灰から立ち上がった一人の戦士が全ての領域の玉座を目指す。',
+    btn_watch:'▶ 今すぐ見る', btn_add:'＋ リストに追加',
+    sec_trending:'🔥 今トレンド', sec_recent:'🆕 最近追加',
+    sec_genres:'🎭 ジャンル別', view_all:'全て見る →',
+    search_ph:'アニメを検索...',
+    g_all:'全て', g_action:'アクション', g_fantasy:'ファンタジー', g_dark:'ダークファンタジー',
+    g_shounen:'少年', g_magic:'魔法', g_horror:'ホラー', g_adv:'冒険',
+    g_romance:'恋愛', g_scifi:'SF', g_mystery:'ミステリー',
+    g_martial:'武道', g_drama:'ドラマ', g_isekai:'異世界', g_mecha:'メカ',
+    f_about:'について', f_dmca:'DMCA', f_contact:'お問い合わせ', f_privacy:'プライバシー',
+    f_terms:'利用規約', f_copy:'© 2026 ダークワールドキング。全著作権所有。',
+    lang_label:'🌍 言語を選択'
+  },
+  zh: {
+    nav_home:'首页', nav_trending:'热门', nav_schedule:'时间表',
+    nav_movies:'电影', nav_top:'最高评分',
+    btn_signin:'登录', badge_new:'⚔ 新集',
+    hero_title:"魔王的\n永恒王座",
+    hero_eps:'24集', hero_genre:'动作·奇幻',
+    hero_desc:'在黑暗统治的世界里，一名战士从倒塌王国的灰烬中崛起，夺取所有领域的王座。',
+    btn_watch:'▶ 立即观看', btn_add:'＋ 加入列表',
+    sec_trending:'🔥 正在热播', sec_recent:'🆕 最近添加',
+    sec_genres:'🎭 按类型浏览', view_all:'查看全部 →',
+    search_ph:'搜索动漫...',
+    g_all:'全部', g_action:'动作', g_fantasy:'奇幻', g_dark:'黑暗奇幻',
+    g_shounen:'少年', g_magic:'魔法', g_horror:'恐怖', g_adv:'冒险',
+    g_romance:'浪漫', g_scifi:'科幻', g_mystery:'悬疑',
+    g_martial:'武术', g_drama:'剧情', g_isekai:'异世界', g_mecha:'机甲',
+    f_about:'关于', f_dmca:'DMCA', f_contact:'联系', f_privacy:'隐私',
+    f_terms:'条款', f_copy:'© 2026 暗界王。版权所有。',
+    lang_label:'🌍 选择语言'
+  },
+  ko: {
+    nav_home:'홈', nav_trending:'트렌딩', nav_schedule:'일정',
+    nav_movies:'영화', nav_top:'최고 평점',
+    btn_signin:'로그인', badge_new:'⚔ 새 에피소드',
+    hero_title:"마왕의\n영원한 왕좌",
+    hero_eps:'24화', hero_genre:'액션 · 판타지',
+    hero_desc:'어둠이 지배하는 세상에서, 한 전사가 무너진 왕국의 재에서 일어나 모든 영역의 왕좌를 차지하려 한다.',
+    btn_watch:'▶ 지금 보기', btn_add:'＋ 목록에 추가',
+    sec_trending:'🔥 지금 트렌딩', sec_recent:'🆕 최근 추가됨',
+    sec_genres:'🎭 장르별 탐색', view_all:'전체 보기 →',
+    search_ph:'애니메 검색...',
+    g_all:'전체', g_action:'액션', g_fantasy:'판타지', g_dark:'다크 판타지',
+    g_shounen:'소년', g_magic:'마법', g_horror:'공포', g_adv:'모험',
+    g_romance:'로맨스', g_scifi:'SF', g_mystery:'미스터리',
+    g_martial:'무술', g_drama:'드라마', g_isekai:'이세계', g_mecha:'메카',
+    f_about:'소개', f_dmca:'DMCA', f_contact:'연락처', f_privacy:'개인정보',
+    f_terms:'이용약관', f_copy:'© 2026 다크 월드 킹. 모든 권리 보유.',
+    lang_label:'🌍 언어 선택'
+  },
+  tr: {
+    nav_home:'Ana Sayfa', nav_trending:'Trend', nav_schedule:'Program',
+    nav_movies:'Filmler', nav_top:'En Çok Puan Alan',
+    btn_signin:'Giriş Yap', badge_new:'⚔ Yeni Bölüm',
+    hero_title:"Şeytan Kralın\nEbedi Tahtı",
+    hero_eps:'24 Bölüm', hero_genre:'Aksiyon · Fantezi',
+    hero_desc:'Karanlığın hüküm sürdüğü bir dünyada, yıkılmış bir krallığın küllerinden bir savaşçı yükselir.',
+    btn_watch:'▶ Şimdi İzle', btn_add:'＋ Listeye Ekle',
+    sec_trending:'🔥 Şu An Trend', sec_recent:'🆕 Yeni Eklenenler',
+    sec_genres:'🎭 Türe Göre Gözat', view_all:'Tümünü Gör →',
+    search_ph:'Anime ara...',
+    g_all:'Tümü', g_action:'Aksiyon', g_fantasy:'Fantezi', g_dark:'Karanlık Fantezi',
+    g_shounen:'Shounen', g_magic:'Büyü', g_horror:'Korku', g_adv:'Macera',
+    g_romance:'Romantik', g_scifi:'Bilim Kurgu', g_mystery:'Gizem',
+    g_martial:'Dövüş Sanatları', g_drama:'Drama', g_isekai:'Isekai', g_mecha:'Mecha',
+    f_about:'Hakkında', f_dmca:'DMCA', f_contact:'İletişim', f_privacy:'Gizlilik',
+    f_terms:'Şartlar', f_copy:'© 2026 Dark World King. Tüm hakları saklıdır.',
+    lang_label:'🌍 Dil Seçin'
+  },
+  fr: {
+    nav_home:'Accueil', nav_trending:'Tendances', nav_schedule:'Programme',
+    nav_movies:'Films', nav_top:'Mieux Notés',
+    btn_signin:'Connexion', badge_new:'⚔ Nouvel Épisode',
+    hero_title:"Le Trône Éternel\ndu Roi Démon",
+    hero_eps:'24 Épisodes', hero_genre:'Action · Fantaisie',
+    hero_desc:"Dans un monde où les ténèbres règnent, un guerrier s'élève des cendres pour réclamer le trône de tous les royaumes.",
+    btn_watch:'▶ Regarder', btn_add:'＋ Ajouter',
+    sec_trending:'🔥 Tendances', sec_recent:'🆕 Récemment Ajoutés',
+    sec_genres:'🎭 Par Genre', view_all:'Voir Tout →',
+    search_ph:'Rechercher anime...',
+    g_all:'Tout', g_action:'Action', g_fantasy:'Fantaisie', g_dark:'Fantaisie Sombre',
+    g_shounen:'Shōnen', g_magic:'Magie', g_horror:'Horreur', g_adv:'Aventure',
+    g_romance:'Romance', g_scifi:'Sci-Fi', g_mystery:'Mystère',
+    g_martial:'Arts Martiaux', g_drama:'Drame', g_isekai:'Isekai', g_mecha:'Mecha',
+    f_about:'À Propos', f_dmca:'DMCA', f_contact:'Contact', f_privacy:'Confidentialité',
+    f_terms:'Conditions', f_copy:'© 2026 Dark World King. Tous droits réservés.',
+    lang_label:'🌍 Choisir la Langue'
+  },
+  es: {
+    nav_home:'Inicio', nav_trending:'Tendencias', nav_schedule:'Horario',
+    nav_movies:'Películas', nav_top:'Mejor Valoradas',
+    btn_signin:'Iniciar Sesión', badge_new:'⚔ Nuevo Episodio',
+    hero_title:"El Trono Eterno\ndel Rey Demonio",
+    hero_eps:'24 Episodios', hero_genre:'Acción · Fantasía',
+    hero_desc:'En un mundo donde reina la oscuridad, un guerrero se levanta de las cenizas para reclamar el trono de todos los reinos.',
+    btn_watch:'▶ Ver Ahora', btn_add:'＋ Añadir a Lista',
+    sec_trending:'🔥 Tendencias', sec_recent:'🆕 Añadidos Recientemente',
+    sec_genres:'🎭 Por Género', view_all:'Ver Todo →',
+    search_ph:'Buscar anime...',
+    g_all:'Todo', g_action:'Acción', g_fantasy:'Fantasía', g_dark:'Fantasía Oscura',
+    g_shounen:'Shounen', g_magic:'Magia', g_horror:'Terror', g_adv:'Aventura',
+    g_romance:'Romance', g_scifi:'Ciencia Ficción', g_mystery:'Misterio',
+    g_martial:'Artes Marciales', g_drama:'Drama', g_isekai:'Isekai', g_mecha:'Mecha',
+    f_about:'Acerca de', f_dmca:'DMCA', f_contact:'Contacto', f_privacy:'Privacidad',
+    f_terms:'Términos', f_copy:'© 2026 Dark World King. Todos los derechos reservados.',
+    lang_label:'🌍 Seleccionar Idioma'
+  },
+  ru: {
+    nav_home:'Главная', nav_trending:'В тренде', nav_schedule:'Расписание',
+    nav_movies:'Фильмы', nav_top:'Топ рейтинг',
+    btn_signin:'Войти', badge_new:'⚔ Новая серия',
+    hero_title:"Вечный трон\nКороля Демонов",
+    hero_eps:'24 серии', hero_genre:'Экшн · Фэнтези',
+    hero_desc:'В мире, где правит тьма, воин восстаёт из пепла павшего королевства, чтобы занять трон всех миров.',
+    btn_watch:'▶ Смотреть', btn_add:'＋ В список',
+    sec_trending:'🔥 В тренде', sec_recent:'🆕 Недавно добавлено',
+    sec_genres:'🎭 По жанру', view_all:'Все →',
+    search_ph:'Поиск аниме...',
+    g_all:'Все', g_action:'Экшн', g_fantasy:'Фэнтези', g_dark:'Тёмное фэнтези',
+    g_shounen:'Сёнэн', g_magic:'Магия', g_horror:'Ужасы', g_adv:'Приключения',
+    g_romance:'Романтика', g_scifi:'Фантастика', g_mystery:'Детектив',
+    g_martial:'Боевые искусства', g_drama:'Драма', g_isekai:'Исэкай', g_mecha:'Меха',
+    f_about:'О нас', f_dmca:'DMCA', f_contact:'Контакты', f_privacy:'Конфиденциальность',
+    f_terms:'Условия', f_copy:'© 2026 Dark World King. Все права защищены.',
+    lang_label:'🌍 Выбрать язык'
+  },
+  pt: {
+    nav_home:'Início', nav_trending:'Tendências', nav_schedule:'Programação',
+    nav_movies:'Filmes', nav_top:'Mais Bem Avaliados',
+    btn_signin:'Entrar', badge_new:'⚔ Novo Episódio',
+    hero_title:"O Trono Eterno\ndo Rei Demônio",
+    hero_eps:'24 Episódios', hero_genre:'Ação · Fantasia',
+    hero_desc:'Em um mundo dominado pela escuridão, um guerreiro emerge das cinzas para reivindicar o trono de todos os reinos.',
+    btn_watch:'▶ Assistir Agora', btn_add:'＋ Adicionar à Lista',
+    sec_trending:'🔥 Em Alta', sec_recent:'🆕 Adicionados Recentemente',
+    sec_genres:'🎭 Por Gênero', view_all:'Ver Tudo →',
+    search_ph:'Buscar anime...',
+    g_all:'Tudo', g_action:'Ação', g_fantasy:'Fantasia', g_dark:'Fantasia Sombria',
+    g_shounen:'Shounen', g_magic:'Magia', g_horror:'Terror', g_adv:'Aventura',
+    g_romance:'Romance', g_scifi:'Ficção Científica', g_mystery:'Mistério',
+    g_martial:'Artes Marciais', g_drama:'Drama', g_isekai:'Isekai', g_mecha:'Mecha',
+    f_about:'Sobre', f_dmca:'DMCA', f_contact:'Contato', f_privacy:'Privacidade',
+    f_terms:'Termos', f_copy:'© 2026 Dark World King. Todos os direitos reservados.',
+    lang_label:'🌍 Selecionar Idioma'
+  },
+  id: {
+    nav_home:'Beranda', nav_trending:'Trending', nav_schedule:'Jadwal',
+    nav_movies:'Film', nav_top:'Penilaian Teratas',
+    btn_signin:'Masuk', badge_new:'⚔ Episode Baru',
+    hero_title:"Tahta Abadi\nRaja Iblis",
+    hero_eps:'24 Episode', hero_genre:'Aksi · Fantasi',
+    hero_desc:'Di dunia tempat kegelapan berkuasa, seorang prajurit bangkit dari abu kerajaan yang jatuh.',
+    btn_watch:'▶ Tonton Sekarang', btn_add:'＋ Tambah ke Daftar',
+    sec_trending:'🔥 Sedang Trending', sec_recent:'🆕 Baru Ditambahkan',
+    sec_genres:'🎭 Jelajahi Genre', view_all:'Lihat Semua →',
+    search_ph:'Cari anime...',
+    g_all:'Semua', g_action:'Aksi', g_fantasy:'Fantasi', g_dark:'Fantasi Gelap',
+    g_shounen:'Shounen', g_magic:'Sihir', g_horror:'Horor', g_adv:'Petualangan',
+    g_romance:'Romansa', g_scifi:'Fiksi Ilmiah', g_mystery:'Misteri',
+    g_martial:'Seni Bela Diri', g_drama:'Drama', g_isekai:'Isekai', g_mecha:'Mecha',
+    f_about:'Tentang', f_dmca:'DMCA', f_contact:'Kontak', f_privacy:'Privasi',
+    f_terms:'Ketentuan', f_copy:'© 2026 Dark World King. Hak cipta dilindungi.',
+    lang_label:'🌍 Pilih Bahasa'
+  },
+  ur: {
+    nav_home:'ہوم', nav_trending:'ٹرینڈنگ', nav_schedule:'شیڈول',
+    nav_movies:'فلمیں', nav_top:'اعلی درجہ بندی',
+    btn_signin:'سائن ان', badge_new:'⚔ نئی قسط',
+    hero_title:"شیطان بادشاہ کا\nابدی تخت",
+    hero_eps:'24 قسطیں', hero_genre:'ایکشن · فنتاسی',
+    hero_desc:'جہاں تاریکی کا راج ہے، وہاں ایک جنگجو راکھ سے اٹھ کر تمام سلطنتوں کے تخت پر دعویٰ کرتا ہے۔',
+    btn_watch:'▶ ابھی دیکھیں', btn_add:'＋ فہرست میں شامل کریں',
+    sec_trending:'🔥 ابھی ٹرینڈنگ', sec_recent:'🆕 حال ہی میں شامل',
+    sec_genres:'🎭 صنف کے مطابق', view_all:'سب دیکھیں →',
+    search_ph:'انیمے تلاش کریں...',
+    g_all:'سب', g_action:'ایکشن', g_fantasy:'فنتاسی', g_dark:'تاریک فنتاسی',
+    g_shounen:'شونن', g_magic:'جادو', g_horror:'ہارر', g_adv:'مہم جوئی',
+    g_romance:'رومانس', g_scifi:'سائنس فکشن', g_mystery:'اسرار',
+    g_martial:'مارشل آرٹس', g_drama:'ڈراما', g_isekai:'اسیکائی', g_mecha:'میکا',
+    f_about:'کے بارے میں', f_dmca:'DMCA', f_contact:'رابطہ', f_privacy:'رازداری',
+    f_terms:'شرائط', f_copy:'© 2026 ڈارک ورلڈ کنگ۔ جملہ حقوق محفوظ ہیں۔',
+    lang_label:'🌍 زبان منتخب کریں'
+  }
+};
+
+const rtlLangs = ['ar', 'ur'];
+
+function setLang(code) {
+  const t = translations[code] || translations['en'];
+  // Update all data-key elements
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (t[key]) {
+      if (key === 'hero_title') {
+        el.innerHTML = t[key].replace('\n', '<br>');
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+  // Search placeholder
+  document.getElementById('search-input').placeholder = t['search_ph'] || 'Search anime...';
+  // Lang label
+  document.getElementById('lang-label').textContent = t['lang_label'] || '🌍 Select Language';
+  // RTL
+  if (rtlLangs.includes(code)) {
+    document.body.classList.add('rtl');
+    document.documentElement.setAttribute('dir', 'rtl');
+  } else {
+    document.body.classList.remove('rtl');
+    document.documentElement.setAttribute('dir', 'ltr');
+  }
+  // Active button
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  // Save preference
+  localStorage.setItem('dwk_lang', code);
+}
+
+// Auto-detect language on load
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('dwk_lang');
+  const browser = navigator.language?.substring(0,2);
+  const langMap = {
+    'bn':'bn','hi':'hi','ar':'ar','ja':'ja','zh':'zh',
+    'ko':'ko','tr':'tr','fr':'fr','es':'es','ru':'ru',
+    'pt':'pt','id':'id','ur':'ur'
+  };
+  const detected = saved || langMap[browser] || 'en';
+  const btn = document.querySelector(`.lang-btn[onclick="setLang('${detected}')"]`);
+  if (btn) btn.click();
+  else setLangDirect('en');
+});
+
+function setLangDirect(code) {
+  const t = translations[code] || translations['en'];
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (t[key]) {
+      if (key === 'hero_title') el.innerHTML = t[key].replace('\n', '<br>');
+      else el.textContent = t[key];
+    }
+  });
+  document.getElementById('search-input').placeholder = t['search_ph'] || 'Search anime...';
+  document.getElementById('lang-label').textContent = t['lang_label'] || '🌍 Select Language';
+}
+
+// Genre toggle
+document.querySelectorAll('.genre-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.genre-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
